@@ -1,0 +1,237 @@
+import {
+  Dimensions,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import {GlobalColors, size} from '../../constants/Global';
+import {LoginTextInput} from '../../components/authorizationComponents/loginTextinput';
+import useHook from './hooks';
+import {RouteProp} from '@react-navigation/native';
+import {RootStackParamList, Routes} from '../../navigation/types';
+import RNPickerSelect from 'react-native-picker-select';
+import {locationArray} from '../authorizationTypeScreen/const';
+
+export default function NewCabinet({
+  route,
+}: {
+  route: RouteProp<RootStackParamList, Routes.NewCabinet>;
+}) {
+  const {
+    name,
+    setName,
+    number,
+    setNumber,
+    email,
+    setEmail,
+    donate,
+    setDonate,
+    error,
+    nextPressHandler,
+    deletePressHandler,
+    saveChanges,
+    location,
+    setLocation,
+  } = useHook(route.params);
+
+  return (
+    <>
+      <View style={styles.container}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <Text style={styles.subHeaderText}>Shelter Name</Text>
+
+          <LoginTextInput
+            textInputPlaceholder="Write shelter name"
+            value={name}
+            onChangeText={setName}
+          />
+
+          <Text style={styles.subHeaderText}>Contact Phone Number</Text>
+
+          <LoginTextInput
+            textInputPlaceholder="Write phone number"
+            value={number}
+            onChangeText={setNumber}
+          />
+
+          <Text style={styles.subHeaderText}>Contact Email Address</Text>
+
+          <LoginTextInput
+            textInputPlaceholder="Write contact email address"
+            value={email}
+            onChangeText={setEmail}
+          />
+
+          <Text style={styles.subHeaderText}>Monobank Donation Link</Text>
+
+          <LoginTextInput
+            textInputPlaceholder="Write you mono url"
+            value={donate}
+            onChangeText={setDonate}
+          />
+
+          <Text style={styles.subHeaderText}>Where are you?</Text>
+
+          <RNPickerSelect
+            darkTheme
+            onValueChange={value => setLocation(value)}
+            items={locationArray}>
+            <View pointerEvents={'none'}>
+              <LoginTextInput
+                textInputPlaceholder="Choose your location"
+                value={location}
+                onChangeText={() => {}}
+              />
+            </View>
+          </RNPickerSelect>
+
+          <Text style={styles.errorText}>
+            {error ? 'You did not fill in all the required fields' : ' '}
+          </Text>
+
+          <Pressable
+            onPress={route.params ? saveChanges : nextPressHandler}
+            style={({pressed}) => [
+              pressed && styles.onPress,
+              styles.nextButtonContainer,
+            ]}>
+            <Text style={styles.nextButtonText}>
+              {route.params ? 'Save Changes' : 'Continue'}
+            </Text>
+          </Pressable>
+
+          {route.params && (
+            <Pressable
+              onPress={deletePressHandler}
+              style={({pressed}) => [
+                pressed && styles.onPress,
+                styles.nextButtonContainer,
+                {backgroundColor: GlobalColors.red},
+              ]}>
+              <Text style={styles.nextButtonText}>Delete</Text>
+            </Pressable>
+          )}
+
+          <View style={{height: 30}} />
+        </ScrollView>
+      </View>
+    </>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: GlobalColors.background,
+    paddingHorizontal: '5%',
+  },
+  subHeaderText: {
+    fontSize: size(12),
+    marginVertical: 5,
+    color: GlobalColors.textInBackground,
+  },
+  genderContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 10,
+    backgroundColor: GlobalColors.primaryLight,
+    borderRadius: 10,
+  },
+  chosenText: {
+    fontSize: size(14),
+    textAlign: 'center',
+    color: GlobalColors.textInActiveColor,
+  },
+  unChosenText: {
+    fontSize: size(14),
+    textAlign: 'center',
+    color: GlobalColors.textInPrimaryLight,
+  },
+  chosenContainer: {
+    flex: 1,
+    backgroundColor: GlobalColors.activeColor,
+    paddingVertical: 10,
+    borderRadius: 10,
+  },
+  unChosenContainer: {
+    flex: 1,
+    paddingVertical: 10,
+    borderRadius: 10,
+  },
+  ageContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  ageInput: {
+    width: Dimensions.get('screen').width * 0.4,
+  },
+  addPhotoButtonContainer: {
+    borderWidth: 1,
+    borderRadius: 10,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
+    borderColor: GlobalColors.primaryLight,
+    height: Dimensions.get('screen').height * 0.3,
+  },
+  emptyPhotoContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    width: Dimensions.get('screen').width * 0.85,
+    alignItems: 'center',
+  },
+  photoSeparator: {
+    width: 5,
+  },
+  photoList: {
+    width: '99%',
+    alignSelf: 'center',
+    borderRadius: 15,
+  },
+  photoItemContainer: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  photoItem: {
+    width: Dimensions.get('screen').width * 0.3,
+    height: '98%',
+    borderRadius: 10,
+  },
+  changeButton: {
+    position: 'absolute',
+    bottom: 10,
+    backgroundColor: GlobalColors.activeColor,
+    paddingHorizontal: 20,
+    paddingVertical: 5,
+    borderRadius: 10,
+  },
+  changeButtonText: {
+    fontSize: size(14),
+    color: GlobalColors.textInActiveColor,
+  },
+  errorText: {
+    color: GlobalColors.red,
+    fontSize: size(12),
+    textAlign: 'center',
+    textDecorationLine: 'underline',
+    marginBottom: 10,
+    marginTop: 5,
+  },
+  nextButtonContainer: {
+    backgroundColor: GlobalColors.activeColor,
+    paddingVertical: 17,
+    borderRadius: 10,
+    marginBottom: 20,
+  },
+  nextButtonText: {
+    fontSize: size(14),
+    color: GlobalColors.textInActiveColor,
+    textAlign: 'center',
+  },
+  onPress: {
+    opacity: 0.7,
+  },
+});

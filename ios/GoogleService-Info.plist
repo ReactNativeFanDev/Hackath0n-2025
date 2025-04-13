@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>706173871492-2j90raruk118r7pgk6aipvinmjojkl8m.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.706173871492-2j90raruk118r7pgk6aipvinmjojkl8m</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>706173871492-ga6glugkkvl18atqikln6esb9hvqboef.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCzc-Yr0pTLOXIWyclByTzpgYmJVv4Rhzk</string>
+	<key>GCM_SENDER_ID</key>
+	<string>706173871492</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.SecretWay</string>
+	<key>PROJECT_ID</key>
+	<string>secretway-a052a</string>
+	<key>STORAGE_BUCKET</key>
+	<string>secretway-a052a.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:706173871492:ios:4d243bf98095c5e91a69d1</string>
+	<key>DATABASE_URL</key>
+	<string>https://secretway-a052a-default-rtdb.europe-west1.firebasedatabase.app</string>
+</dict>
+</plist>
