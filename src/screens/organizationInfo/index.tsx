@@ -4,33 +4,22 @@ import {
   Linking,
   Pressable,
   ScrollView,
-  StyleSheet,
   Text,
   View,
 } from 'react-native';
-import {GlobalColors, size} from '../../constants/Global';
 import {RouteProp} from '@react-navigation/native';
 import {RootStackParamList, Routes} from '../../navigation/types';
 import FastImage from '@d11/react-native-fast-image';
 import {MonoSvg} from '../../assets/svg/organizationInfo/monoSvg';
+import {styles} from './styles';
 
 export default function OrganizationInfo({
   route,
 }: {
   route: RouteProp<RootStackParamList, Routes.OrganizationInfo>;
 }) {
-  const {
-    userName,
-    email,
-    avatar,
-    description,
-    phone,
-    chats,
-    donate,
-    category,
-    location,
-    type,
-  } = route.params;
+  const {userName, email, avatar, donate, category, location, type} =
+    route.params;
 
   function openEmailPressHandler() {
     const subject = 'доброго дня';
@@ -52,176 +41,41 @@ export default function OrganizationInfo({
   }
 
   return (
-    <View style={{flex: 1, backgroundColor: GlobalColors.background}}>
+    <View style={styles.container}>
       <ScrollView indicatorStyle="white">
-        <Text
-          style={{
-            color: GlobalColors.textInBackground,
-            textAlign: 'center',
-            fontSize: size(16),
-            marginBottom: 10,
-            textTransform: 'uppercase',
-          }}>
-          {userName}
-        </Text>
+        <Text style={styles.userName}>{userName}</Text>
 
-        <FastImage
-          source={{uri: avatar}}
-          style={{
-            width: Dimensions.get('screen').width * 0.8,
-            height: Dimensions.get('screen').height * 0.3,
-            backgroundColor: GlobalColors.primaryLight,
-            alignSelf: 'center',
-            borderRadius: 15,
-          }}
-        />
+        <FastImage source={{uri: avatar}} style={styles.avatar} />
 
-        <View style={{gap: 10, marginBottom: 20}}>
-          <View
-            style={{
-              backgroundColor: GlobalColors.primary,
-              paddingVertical: 10,
-              width: '90%',
-              alignSelf: 'center',
-              marginTop: 12,
-              borderRadius: 10,
-            }}>
-            <Text
-              style={{
-                color: GlobalColors.textInBackground,
-                textAlign: 'center',
-                fontSize: size(16),
-
-                textTransform: 'uppercase',
-              }}>
-              Category
-            </Text>
+        <View style={styles.infoContainer}>
+          <View style={styles.infoHeader}>
+            <Text style={styles.infoHeaderText}>Category</Text>
           </View>
+          <Text style={styles.infoText}>{category}</Text>
 
-          <Text
-            style={{
-              color: GlobalColors.textInBackground,
-              textAlign: 'center',
-              fontSize: size(16),
-              textTransform: 'uppercase',
-              marginTop: 10,
-            }}>
-            {category}
-          </Text>
-
-          <View
-            style={{
-              backgroundColor: GlobalColors.primary,
-              paddingVertical: 10,
-              width: '90%',
-              alignSelf: 'center',
-              marginTop: 12,
-              borderRadius: 10,
-            }}>
-            <Text
-              style={{
-                color: GlobalColors.textInBackground,
-                textAlign: 'center',
-                fontSize: size(16),
-
-                textTransform: 'uppercase',
-              }}>
-              Type
-            </Text>
+          <View style={styles.infoHeader}>
+            <Text style={styles.infoHeaderText}>Type</Text>
           </View>
+          <Text style={styles.infoText}>{type}</Text>
 
-          <Text
-            style={{
-              color: GlobalColors.textInBackground,
-              textAlign: 'center',
-              fontSize: size(16),
-              textTransform: 'uppercase',
-              marginTop: 10,
-            }}>
-            {type}
-          </Text>
-
-          <View
-            style={{
-              backgroundColor: GlobalColors.primary,
-              paddingVertical: 10,
-              width: '90%',
-              alignSelf: 'center',
-              marginTop: 12,
-              borderRadius: 10,
-            }}>
-            <Text
-              style={{
-                color: GlobalColors.textInBackground,
-                textAlign: 'center',
-                fontSize: size(16),
-
-                textTransform: 'uppercase',
-              }}>
-              location
-            </Text>
+          <View style={styles.infoHeader}>
+            <Text style={styles.infoHeaderText}>Location</Text>
           </View>
-
-          <Text
-            style={{
-              color: GlobalColors.textInBackground,
-              textAlign: 'center',
-              fontSize: size(16),
-              textTransform: 'uppercase',
-              marginTop: 10,
-            }}>
-            {location}
-          </Text>
+          <Text style={styles.infoText}>{location}</Text>
         </View>
 
         {donate && (
-          <View
-            style={{
-              width: '90%',
-              alignSelf: 'center',
-              backgroundColor: GlobalColors.activeColor,
-              borderRadius: 10,
-              gap: 15,
-              paddingVertical: 10,
-              paddingHorizontal: '2.5%',
-            }}>
-            <Text
-              style={{
-                color: GlobalColors.textInActiveColor,
-                textAlign: 'center',
-                fontSize: size(20),
-                fontWeight: '700',
-              }}>
-              Donate to organization
-            </Text>
-
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'flex-end',
-              }}>
+          <View style={styles.donateContainer}>
+            <Text style={styles.donateTitle}>Donate to organization</Text>
+            <View style={styles.donateActions}>
               <Pressable
                 onPress={donatePressHandler}
                 style={({pressed}) => [
                   pressed && styles.onPress,
-                  {
-                    backgroundColor: GlobalColors.primaryLight,
-
-                    borderRadius: 10,
-                  },
+                  styles.donateButton,
                 ]}>
-                <Text
-                  style={{
-                    color: GlobalColors.textInPrimaryLight,
-                    fontSize: size(16),
-                    paddingHorizontal: 20,
-                    paddingVertical: 10,
-                  }}>
-                  Donate
-                </Text>
+                <Text style={styles.donateButtonText}>Donate</Text>
               </Pressable>
-
               <MonoSvg
                 width={Dimensions.get('screen').width * 0.3}
                 height={Dimensions.get('screen').width * 0.3}
@@ -231,53 +85,21 @@ export default function OrganizationInfo({
         )}
 
         {email && (
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              width: '90%',
-              alignSelf: 'center',
-              marginTop: 10,
-            }}>
-            <Text
-              style={{
-                fontSize: size(16),
-                color: GlobalColors.textInBackground,
-                textTransform: 'uppercase',
-              }}>
-              Contact with us
-            </Text>
-
+          <View style={styles.contactContainer}>
+            <Text style={styles.contactText}>Contact with us</Text>
             <Pressable
               style={({pressed}) => [
                 pressed && styles.onPress,
-                {backgroundColor: GlobalColors.activeColor, borderRadius: 15},
+                styles.contactButton,
               ]}
               onPress={openEmailPressHandler}>
-              <Text
-                style={{
-                  color: GlobalColors.textInActiveColor,
-                  fontSize: size(14),
-                  paddingVertical: 10,
-                  paddingHorizontal: 20,
-                  fontWeight: '500',
-                  textTransform: 'uppercase',
-                }}>
-                Contact
-              </Text>
+              <Text style={styles.contactButtonText}>Contact</Text>
             </Pressable>
           </View>
         )}
 
-        <View style={{height: 50}} />
+        <View style={styles.footerSpacing} />
       </ScrollView>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  onPress: {
-    opacity: 0.6,
-  },
-});

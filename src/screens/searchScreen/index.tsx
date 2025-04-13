@@ -1,13 +1,4 @@
-import {
-  Dimensions,
-  FlatList,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
-import {GlobalColors, size} from '../../constants/Global';
+import {FlatList, Pressable, ScrollView, Text, View} from 'react-native';
 import React from 'react';
 import useHook from './hooks';
 import FastImage from '@d11/react-native-fast-image';
@@ -15,6 +6,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import {locationArray} from '../authorizationTypeScreen/const';
 import {ageYearsArray} from './const';
 import {healthStates} from '../newAnnouncement/const';
+import {styles} from './styles';
 
 export default function SearchScreen({}) {
   const {
@@ -29,31 +21,18 @@ export default function SearchScreen({}) {
   } = useHook();
 
   return (
-    <View style={{flex: 1, backgroundColor: GlobalColors.background}}>
+    <View style={styles.container}>
       <View>
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          style={{
-            backgroundColor: GlobalColors.background,
-            flexDirection: 'row',
-            paddingHorizontal: '5%',
-            paddingBottom: 10,
-            paddingTop: 10,
-          }}>
+          style={styles.scrollView}>
           <RNPickerSelect
             darkTheme
             onValueChange={value => setLocation(value)}
             items={locationArray}>
-            <View
-              style={{
-                backgroundColor: GlobalColors.primaryLight,
-                borderRadius: 12,
-                paddingHorizontal: 10,
-                paddingVertical: 4,
-                marginRight: 10,
-              }}>
-              <Text style={{color: '#FFF', fontSize: size(12)}}>
+            <View style={styles.pickerContainer}>
+              <Text style={styles.pickerText}>
                 {location ? location : 'Оберіть локацію'}
               </Text>
             </View>
@@ -63,17 +42,8 @@ export default function SearchScreen({}) {
             darkTheme
             onValueChange={value => setAge(value)}
             items={ageYearsArray}>
-            <View
-              style={{
-                backgroundColor: GlobalColors.primaryLight,
-                borderRadius: 12,
-                paddingHorizontal: 10,
-                paddingVertical: 4,
-                marginRight: 10,
-              }}>
-              <Text style={{color: '#FFF', fontSize: size(12)}}>
-                {age ? age : 'Оберіть вік'}
-              </Text>
+            <View style={styles.pickerContainer}>
+              <Text style={styles.pickerText}>{age ? age : 'Оберіть вік'}</Text>
             </View>
           </RNPickerSelect>
 
@@ -81,17 +51,8 @@ export default function SearchScreen({}) {
             darkTheme
             onValueChange={value => setHealth(value)}
             items={healthStates}>
-            <View
-              style={{
-                backgroundColor: GlobalColors.primaryLight,
-                borderRadius: 12,
-                paddingHorizontal: 10,
-                paddingVertical: 4,
-                marginRight: 10,
-              }}>
-              <Text style={{color: '#FFF', fontSize: size(12)}}>
-                {health ? health : 'Стан'}
-              </Text>
+            <View style={styles.pickerContainer}>
+              <Text style={styles.pickerText}>{health ? health : 'Стан'}</Text>
             </View>
           </RNPickerSelect>
         </ScrollView>
@@ -99,73 +60,28 @@ export default function SearchScreen({}) {
 
       <FlatList
         data={filteredAnnouncement}
-        ItemSeparatorComponent={() => <View style={{height: 10}} />}
+        ItemSeparatorComponent={() => <View style={styles.itemSeparator} />}
         renderItem={({item}) => (
           <Pressable
             onPress={() => openAnimal(item)}
             style={({pressed}) => [
               pressed && styles.onPress,
-              {
-                width: '90%',
-                alignSelf: 'center',
-                backgroundColor: GlobalColors.primary,
-                borderRadius: 15,
-                overflow: 'hidden',
-                flexDirection: 'row',
-                gap: 15,
-              },
+              styles.pressableContainer,
             ]}>
             <FastImage
               source={{uri: item.photoArr[0].uri}}
-              style={{
-                width: Dimensions.get('screen').width * 0.2,
-                height: Dimensions.get('screen').width * 0.3,
-                borderRadius: 15,
-              }}
+              style={styles.image}
             />
 
-            <View
-              style={{
-                flex: 1,
-                paddingRight: 20,
-                justifyContent: 'space-around',
-              }}>
-              <View
-                style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                <Text
-                  style={{
-                    color: GlobalColors.textInPrimary,
-                    fontSize: size(16),
-                  }}>
-                  Species
-                </Text>
-
-                <Text
-                  style={{
-                    color: GlobalColors.textInPrimary,
-                    fontSize: size(16),
-                  }}>
-                  {item.species}
-                </Text>
+            <View style={styles.itemContent}>
+              <View style={styles.row}>
+                <Text style={styles.text}>Species</Text>
+                <Text style={styles.text}>{item.species}</Text>
               </View>
 
-              <View
-                style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                <Text
-                  style={{
-                    color: GlobalColors.textInPrimary,
-                    fontSize: size(16),
-                  }}>
-                  Breed
-                </Text>
-
-                <Text
-                  style={{
-                    color: GlobalColors.textInPrimary,
-                    fontSize: size(16),
-                  }}>
-                  {item.breed}
-                </Text>
+              <View style={styles.row}>
+                <Text style={styles.text}>Breed</Text>
+                <Text style={styles.text}>{item.breed}</Text>
               </View>
             </View>
           </Pressable>
@@ -174,9 +90,3 @@ export default function SearchScreen({}) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  onPress: {
-    opacity: 0.7,
-  },
-});

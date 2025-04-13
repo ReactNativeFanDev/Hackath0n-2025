@@ -1,23 +1,15 @@
-import {
-  Dimensions,
-  FlatList,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
-import {GlobalColors, size} from '../../constants/Global';
+import {Dimensions, FlatList, Pressable, Text, View} from 'react-native';
+import {GlobalColors} from '../../constants/Global';
 import LogOutSvg from '../../assets/svg/profile/logOutSvg';
 import useHook from './hooks';
 import FastImage from '@d11/react-native-fast-image';
 import EditSvg from '../../assets/svg/profile/editSvg';
 import {LoginTextInput} from '../../components/authorizationComponents/loginTextinput';
+import {styles} from './styles';
 
 export default function ProfileScreen() {
   const {
     logOutPressHandler,
-    // userName,
-    // email,
     userAnnouncements,
     userNameState,
     setUserNameState,
@@ -25,10 +17,6 @@ export default function ProfileScreen() {
     setContactEmail,
     donateUrl,
     setDonateUrl,
-    // avatar,
-    // description,
-    // phone,
-    // chats,
     avatarCurrent,
     type,
     saveChangeInProfile,
@@ -42,13 +30,10 @@ export default function ProfileScreen() {
         <Pressable
           onPress={changeAvatarPressHandler}
           style={({pressed}) => [pressed && styles.onPress, styles.avatar]}>
-          <FastImage
-            source={{uri: avatarCurrent}}
-            style={{width: '100%', height: '100%', position: 'absolute'}}
-          />
+          <FastImage source={{uri: avatarCurrent}} style={styles.avatarImage} />
         </Pressable>
 
-        <View style={{gap: 10}}>
+        <View style={styles.inputContainer}>
           <Text style={styles.userName}>
             {type === 'Organization' ? 'Organization name' : 'Name'}
           </Text>
@@ -57,8 +42,8 @@ export default function ProfileScreen() {
             textInputPlaceholder="Write organization name"
             value={userNameState}
             onChangeText={setUserNameState}
-            containerStyle={{width: Dimensions.get('screen').width * 0.6}}
-            textInputStyle={{paddingVertical: 10, width: '100%'}}
+            containerStyle={styles.textInputContainer}
+            textInputStyle={styles.textInput}
           />
           <Text style={styles.userName}>Contact email</Text>
 
@@ -66,45 +51,29 @@ export default function ProfileScreen() {
             textInputPlaceholder="Write your email"
             value={contactEmail}
             onChangeText={setContactEmail}
-            containerStyle={{width: Dimensions.get('screen').width * 0.6}}
-            textInputStyle={{paddingVertical: 10, width: '100%'}}
+            containerStyle={styles.textInputContainer}
+            textInputStyle={styles.textInput}
           />
         </View>
       </View>
 
       {type === 'Organization' && (
         <>
-          <Text style={[styles.userName]}>Donate url</Text>
+          <Text style={styles.userName}>Donate url</Text>
           <LoginTextInput
             textInputPlaceholder="Write your url for donating"
             value={donateUrl}
             onChangeText={setDonateUrl}
-            containerStyle={{width: '100%', marginTop: 10}}
-            textInputStyle={{paddingVertical: 10, width: '100%'}}
+            containerStyle={styles.donateInputContainer}
+            textInputStyle={styles.textInput}
           />
         </>
       )}
 
       <Pressable
         onPress={saveChangeInProfile}
-        style={({pressed}) => [
-          pressed && styles.onPress,
-          {
-            backgroundColor: GlobalColors.activeColor,
-            borderRadius: 10,
-            marginTop: 10,
-          },
-        ]}>
-        <Text
-          style={{
-            color: GlobalColors.textInActiveColor,
-            fontSize: size(14),
-            fontWeight: '600',
-            textAlign: 'center',
-            paddingVertical: 10,
-          }}>
-          Save changes
-        </Text>
+        style={({pressed}) => [pressed && styles.onPress, styles.saveButton]}>
+        <Text style={styles.saveButtonText}>Save changes</Text>
       </Pressable>
 
       <View style={styles.separator} />
@@ -172,106 +141,3 @@ export default function ProfileScreen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: GlobalColors.background,
-    paddingHorizontal: '5%',
-    paddingTop: 10,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-    justifyContent: 'space-between',
-  },
-  avatar: {
-    height: Dimensions.get('screen').width * 0.27,
-    width: Dimensions.get('screen').width * 0.27,
-    borderRadius: 15,
-    backgroundColor: GlobalColors.primaryLight,
-    overflow: 'hidden',
-  },
-  userName: {
-    fontSize: size(14),
-    letterSpacing: 2,
-    color: GlobalColors.textInBackground,
-    fontWeight: '500',
-  },
-  email: {
-    fontSize: size(12),
-    fontWeight: '300',
-    color: `${GlobalColors.textInBackground}90`,
-    letterSpacing: 1,
-    width: '80%',
-  },
-  separator: {
-    height: 1,
-    backgroundColor: `${GlobalColors.textInBackground}60`,
-    marginTop: 20,
-  },
-  itemSeparator: {
-    height: 15,
-  },
-  listHeaderFooter: {
-    height: 20,
-  },
-  flatList: {
-    width: Dimensions.get('screen').width,
-    alignSelf: 'center',
-  },
-  announcementContainer: {
-    flexDirection: 'row',
-    backgroundColor: GlobalColors.primary,
-    alignItems: 'center',
-    gap: 15,
-    borderRadius: 10,
-    overflow: 'hidden',
-    marginHorizontal: Dimensions.get('screen').width * 0.06,
-    paddingRight: 20,
-  },
-  announcementImage: {
-    width: Dimensions.get('screen').width * 0.25,
-    height: Dimensions.get('screen').width * 0.25,
-    backgroundColor: GlobalColors.primaryLight,
-  },
-  announcementDetails: {
-    justifyContent: 'space-around',
-    height: Dimensions.get('screen').width * 0.25,
-  },
-  detailRow: {
-    flexDirection: 'row',
-    gap: 10,
-  },
-  detailLabel: {
-    color: GlobalColors.textInPrimary,
-    fontSize: size(12),
-  },
-  detailValue: {
-    color: GlobalColors.textInPrimary,
-    fontSize: size(12),
-  },
-  flexSpacer: {
-    flex: 1,
-  },
-  bottomSeparator: {
-    height: 1,
-    backgroundColor: `${GlobalColors.lightContainer}60`,
-    marginBottom: 10,
-  },
-  logOutButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-    paddingVertical: 10,
-    alignSelf: 'flex-end',
-  },
-  logOutText: {
-    fontSize: size(14),
-    color: GlobalColors.red,
-  },
-  onPress: {
-    opacity: 0.5,
-  },
-});

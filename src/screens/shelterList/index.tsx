@@ -3,47 +3,33 @@ import {
   FlatList,
   Pressable,
   ScrollView,
-  StyleSheet,
   Text,
   View,
 } from 'react-native';
-import {GlobalColors, size} from '../../constants/Global';
+import {GlobalColors} from '../../constants/Global';
 import React from 'react';
 import useHook from './hooks';
-import FastImage from '@d11/react-native-fast-image';
 import RNPickerSelect from 'react-native-picker-select';
 import {locationArray} from '../authorizationTypeScreen/const';
 import ShelterSvg from '../../assets/svg/navigation/shelter';
+import {styles} from './styles';
 
 export default function ShelterList({}) {
   const {filteredCabinets, openAnimal, location, setLocation} = useHook();
 
   return (
-    <View style={{flex: 1, backgroundColor: GlobalColors.background}}>
+    <View style={styles.container}>
       <View>
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          style={{
-            backgroundColor: GlobalColors.background,
-            flexDirection: 'row',
-            paddingHorizontal: '5%',
-            paddingBottom: 10,
-            paddingTop: 10,
-          }}>
+          style={styles.scrollView}>
           <RNPickerSelect
             darkTheme
             onValueChange={value => setLocation(value)}
             items={locationArray}>
-            <View
-              style={{
-                backgroundColor: GlobalColors.primaryLight,
-                borderRadius: 12,
-                paddingHorizontal: 10,
-                paddingVertical: 4,
-                marginRight: 10,
-              }}>
-              <Text style={{color: '#FFF', fontSize: size(12)}}>
+            <View style={styles.pickerContainer}>
+              <Text style={styles.pickerText}>
                 {location ? location : 'Оберіть локацію'}
               </Text>
             </View>
@@ -53,79 +39,30 @@ export default function ShelterList({}) {
 
       <FlatList
         data={filteredCabinets}
-        ItemSeparatorComponent={() => <View style={{height: 10}} />}
+        ItemSeparatorComponent={() => <View style={styles.itemSeparator} />}
         renderItem={({item}) => (
           <Pressable
             onPress={() => openAnimal(item)}
             style={({pressed}) => [
               pressed && styles.onPress,
-              {
-                width: '90%',
-                alignSelf: 'center',
-                backgroundColor: GlobalColors.primary,
-                borderRadius: 15,
-                overflow: 'hidden',
-                flexDirection: 'row',
-                gap: 15,
-              },
+              styles.pressableContainer,
             ]}>
-            <View
-              style={{
-                width: Dimensions.get('screen').width * 0.2,
-                height: Dimensions.get('screen').width * 0.3,
-                backgroundColor: GlobalColors.primaryLight,
-                borderRadius: 15,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
+            <View style={styles.shelterIconContainer}>
               <ShelterSvg
                 size={Dimensions.get('screen').width * 0.1}
                 fill={GlobalColors.activeColor}
               />
             </View>
 
-            <View
-              style={{
-                flex: 1,
-                paddingRight: 20,
-                justifyContent: 'space-around',
-              }}>
-              <View
-                style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                <Text
-                  style={{
-                    color: GlobalColors.textInPrimary,
-                    fontSize: size(16),
-                  }}>
-                  Shelter name
-                </Text>
-
-                <Text
-                  style={{
-                    color: GlobalColors.textInPrimary,
-                    fontSize: size(16),
-                  }}>
-                  {item.name}
-                </Text>
+            <View style={styles.itemDetailsContainer}>
+              <View style={styles.row}>
+                <Text style={styles.textPrimary}>Shelter name</Text>
+                <Text style={styles.textPrimary}>{item.name}</Text>
               </View>
 
-              <View
-                style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                <Text
-                  style={{
-                    color: GlobalColors.textInPrimary,
-                    fontSize: size(16),
-                  }}>
-                  Location
-                </Text>
-
-                <Text
-                  style={{
-                    color: GlobalColors.textInPrimary,
-                    fontSize: size(16),
-                  }}>
-                  {item.location}
-                </Text>
+              <View style={styles.row}>
+                <Text style={styles.textPrimary}>Location</Text>
+                <Text style={styles.textPrimary}>{item.location}</Text>
               </View>
             </View>
           </Pressable>
@@ -134,9 +71,3 @@ export default function ShelterList({}) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  onPress: {
-    opacity: 0.7,
-  },
-});

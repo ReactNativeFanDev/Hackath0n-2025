@@ -28,8 +28,9 @@ import {
   removeFavorite,
 } from '../../redux/announcement/announcementSlice';
 import {fetchUserProfile} from '../../redux/profile/profileThunks';
-import {ProfileState} from '../../redux/profile/profileSlice';
+
 import {MonoSvg} from '../../assets/svg/organizationInfo/monoSvg';
+import {styles} from './styles';
 
 function PhotoCarousel({
   data,
@@ -55,9 +56,7 @@ function PhotoCarousel({
         autoPlay
         snapEnabled={true}
         width={Dimensions.get('screen').width}
-        style={{
-          width: Dimensions.get('screen').width,
-        }}
+        style={styles.carousel}
         mode="parallax"
         modeConfig={{
           parallaxScrollingScale: 0.9,
@@ -65,40 +64,11 @@ function PhotoCarousel({
         }}
         onProgressChange={progress}
         renderItem={({item}) => (
-          <View
-            style={{
-              width: Dimensions.get('screen').width,
-              height: Dimensions.get('screen').height * 0.5,
-              backgroundColor: GlobalColors.primaryLight,
-              alignSelf: 'center',
-              borderRadius: 12,
-              overflow: 'hidden',
-            }}>
-            <FastImage
-              source={{uri: item.uri}}
-              style={{width: '100%', height: '100%'}}
-            />
+          <View style={styles.carouselItem}>
+            <FastImage source={{uri: item.uri}} style={styles.carouselImage} />
 
-            <View
-              style={{
-                position: 'absolute',
-                right: 15,
-                top: 15,
-                alignItems: 'center',
-                flexDirection: 'row',
-                gap: 10,
-                backgroundColor: GlobalColors.primaryLight,
-                paddingHorizontal: 20,
-                paddingVertical: 10,
-                borderRadius: 10,
-              }}>
-              <Text
-                style={{
-                  color: GlobalColors.textInPrimaryLight,
-                  fontSize: size(18),
-                }}>
-                {name}{' '}
-              </Text>
+            <View style={styles.carouselOverlay}>
+              <Text style={styles.carouselText}>{name} </Text>
               {sex === 'Male' ? (
                 <MaleSvg
                   width={Dimensions.get('screen').width * 0.08}
@@ -138,7 +108,6 @@ export default function AnimalInfo({
     age,
     ageType,
     photoArr,
-    // createdAt,
     name,
     healthCondition,
     location,
@@ -180,134 +149,41 @@ export default function AnimalInfo({
   }
 
   return (
-    <View style={{flex: 1, backgroundColor: GlobalColors.background}}>
+    <View style={styles.container}>
       <ScrollView indicatorStyle="white">
         <PhotoCarousel data={photoArr} name={name} sex={sex} />
 
-        <Text
-          style={{
-            color: GlobalColors.textInBackground,
-            fontSize: size(18),
-            marginLeft: '5%',
-          }}>
-          Species {species}
-        </Text>
-
-        <Text
-          style={{
-            color: GlobalColors.textInBackground,
-            fontSize: size(18),
-            marginLeft: '5%',
-            marginTop: 12,
-          }}>
+        <Text style={styles.infoText}>Species {species}</Text>
+        <Text style={[styles.infoText, styles.infoTextMargin]}>
           Breed {breed}
         </Text>
-
-        <Text
-          style={{
-            color: GlobalColors.textInBackground,
-            fontSize: size(18),
-            marginLeft: '5%',
-            marginTop: 12,
-          }}>
+        <Text style={[styles.infoText, styles.infoTextMargin]}>
           Age - {age} {ageType.toLocaleLowerCase()}
         </Text>
-
-        <Text
-          style={{
-            color: GlobalColors.textInBackground,
-            fontSize: size(18),
-            marginLeft: '5%',
-            marginTop: 12,
-          }}>
+        <Text style={[styles.infoText, styles.infoTextMargin]}>
           Health Condition - {healthCondition}
         </Text>
-
-        <Text
-          style={{
-            color: GlobalColors.textInBackground,
-            fontSize: size(18),
-            marginLeft: '5%',
-            marginTop: 12,
-          }}>
+        <Text style={[styles.infoText, styles.infoTextMargin]}>
           Location - {location}
         </Text>
 
-        <View
-          style={{
-            backgroundColor: GlobalColors.primaryLight,
-            width: '90%',
-            alignSelf: 'center',
-            paddingVertical: 10,
-            paddingHorizontal: 15,
-            borderRadius: 15,
-            marginTop: 15,
-          }}>
-          <Text
-            style={{
-              color: GlobalColors.textInPrimary,
-              fontSize: size(18),
-              textTransform: 'uppercase',
-              textAlign: 'center',
-              marginBottom: 15,
-            }}>
-            Description
-          </Text>
-
-          <Text style={{color: GlobalColors.textInPrimary, fontSize: size(14)}}>
-            {description}
-          </Text>
+        <View style={styles.descriptionContainer}>
+          <Text style={styles.descriptionTitle}>Description</Text>
+          <Text style={styles.descriptionText}>{description}</Text>
         </View>
 
         {donate && (
-          <View
-            style={{
-              width: '90%',
-              alignSelf: 'center',
-              backgroundColor: GlobalColors.activeColor,
-              borderRadius: 10,
-              gap: 15,
-              paddingVertical: 10,
-              paddingHorizontal: '2.5%',
-              marginTop: 10,
-            }}>
-            <Text
-              style={{
-                color: GlobalColors.textInActiveColor,
-                textAlign: 'center',
-                fontSize: size(20),
-                fontWeight: '700',
-              }}>
-              Donate for this pet
-            </Text>
-
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'flex-end',
-              }}>
+          <View style={styles.donateContainer}>
+            <Text style={styles.donateTitle}>Donate for this pet</Text>
+            <View style={styles.donateRow}>
               <Pressable
                 onPress={donatePressHandler}
                 style={({pressed}) => [
                   pressed && styles.onPress,
-                  {
-                    backgroundColor: GlobalColors.primaryLight,
-
-                    borderRadius: 10,
-                  },
+                  styles.donateButton,
                 ]}>
-                <Text
-                  style={{
-                    color: GlobalColors.textInPrimaryLight,
-                    fontSize: size(16),
-                    paddingHorizontal: 20,
-                    paddingVertical: 10,
-                  }}>
-                  Donate
-                </Text>
+                <Text style={styles.donateButtonText}>Donate</Text>
               </Pressable>
-
               <MonoSvg
                 width={Dimensions.get('screen').width * 0.3}
                 height={Dimensions.get('screen').width * 0.3}
@@ -316,37 +192,15 @@ export default function AnimalInfo({
           </View>
         )}
 
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            width: '90%',
-            alignSelf: 'center',
-            marginBottom: 33,
-            marginTop: 20,
-            gap: 10,
-          }}>
+        <View style={styles.actionButtonsContainer}>
           <Pressable
             hitSlop={12}
             onPress={infoPressHandler}
             style={({pressed}) => [
               pressed && styles.onPress,
-              {
-                backgroundColor: GlobalColors.primaryLight,
-                flex: 0.5,
-                paddingVertical: 14,
-                borderRadius: 15,
-              },
+              styles.infoButton,
             ]}>
-            <Text
-              style={{
-                color: GlobalColors.textInPrimary,
-                fontWeight: '500',
-                fontSize: size(14),
-                textAlign: 'center',
-              }}>
-              INFO
-            </Text>
+            <Text style={styles.infoButtonText}>INFO</Text>
           </Pressable>
 
           <Pressable
@@ -356,22 +210,11 @@ export default function AnimalInfo({
             hitSlop={12}
             style={({pressed}) => [
               pressed && styles.onPress,
-              {
-                backgroundColor: isFavorite
-                  ? GlobalColors.red
-                  : GlobalColors.activeColor,
-                paddingVertical: 14,
-                flex: 1,
-                borderRadius: 15,
-              },
+              isFavorite
+                ? styles.removeFavoriteButton
+                : styles.saveFavoriteButton,
             ]}>
-            <Text
-              style={{
-                color: GlobalColors.primary,
-                fontWeight: '500',
-                fontSize: size(14),
-                textAlign: 'center',
-              }}>
+            <Text style={styles.favoriteButtonText}>
               {isFavorite ? 'Remove from favorite' : 'Save to favorite'}
             </Text>
           </Pressable>
@@ -380,9 +223,3 @@ export default function AnimalInfo({
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  onPress: {
-    opacity: 0.6,
-  },
-});
